@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
     <title>Detector de contradicciones</title>
-    <link rel="stylesheet" href="src/css/style.css" />
+    <link rel="stylesheet" href="src/css/style%204.css" />
   </head>
   <body>
     <header class="topbar">
@@ -49,12 +49,28 @@
         sí dentro del mismo texto: cifras, plazos o reglas incompatibles.
       </p>
 
-      <label for="doc">Documento</label>
+      <label for="doc" id="docLabel">Documento</label>
       <textarea
         id="doc"
-        placeholder="Pega aquí un contrato, una política interna, un manual de procedimiento o cualquier documento largo..."
+        placeholder="Pega aquí un contrato, una política interna, un manual de procedimiento o cualquier documento largo... También puedes arrastrar un archivo .txt."
         spellcheck="false"
       ></textarea>
+      <div id="docHighlight" class="doc-highlight" hidden></div>
+
+      <div class="toolbar-row">
+        <button id="fileOpenBtn" type="button">Abrir archivo</button>
+        <button id="compareToggle" type="button" aria-pressed="false">Comparar docs</button>
+      </div>
+      <input type="file" id="fileInput" accept=".txt,.md" hidden />
+
+      <div id="compareArea" hidden>
+        <label for="docB">Documento B</label>
+        <textarea
+          id="docB"
+          placeholder="Pega aquí el segundo documento para comparar con el primero..."
+          spellcheck="false"
+        ></textarea>
+      </div>
 
       <div class="meta-row">
         <span class="counter" id="counter">0 palabras · 0 caracteres</span>
@@ -62,6 +78,14 @@
       </div>
 
       <div id="output"></div>
+
+      <details id="historySection" class="history-section">
+        <summary>Historial</summary>
+        <div class="history-header">
+          <button class="history-clear" type="button">Borrar todo</button>
+        </div>
+        <div class="history-list"></div>
+      </details>
     </main>
 
     <dialog id="settingsDialog" closedby="any" aria-labelledby="settings-title">
@@ -90,6 +114,23 @@
             <button type="button" id="toggleKeyBtn" aria-pressed="false">
               Mostrar
             </button>
+          </div>
+        </div>
+        <div class="field">
+          <label>Tema</label>
+          <div class="theme-row" role="group" aria-label="Tema">
+            <label class="theme-option">
+              <input type="radio" name="settingsTheme" value="auto" checked />
+              Sistema
+            </label>
+            <label class="theme-option">
+              <input type="radio" name="settingsTheme" value="light" />
+              Claro
+            </label>
+            <label class="theme-option">
+              <input type="radio" name="settingsTheme" value="dark" />
+              Oscuro
+            </label>
           </div>
         </div>
         <p class="hint">

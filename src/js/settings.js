@@ -1,3 +1,9 @@
+function applyTheme(theme) {
+  const scheme =
+    theme === "light" ? "light" : theme === "dark" ? "dark" : "light dark";
+  document.documentElement.style.colorScheme = scheme;
+}
+
 export function initSettings() {
   const dialog = document.getElementById("settingsDialog");
   const btn = document.getElementById("settingsBtn");
@@ -5,11 +11,18 @@ export function initSettings() {
   const modelIn = document.getElementById("settingsModel");
   const keyIn = document.getElementById("settingsApiKey");
   const toggleBtn = document.getElementById("toggleKeyBtn");
+  const themeInputs = document.querySelectorAll('input[name="settingsTheme"]');
+
+  applyTheme(localStorage.getItem("fold-theme") || "auto");
 
   btn.addEventListener("click", () => {
     endpointIn.value = localStorage.getItem("ai-endpoint") ?? "";
     modelIn.value = localStorage.getItem("ai-model") ?? "";
     keyIn.value = localStorage.getItem("ai-api-key") ?? "";
+    const savedTheme = localStorage.getItem("fold-theme") || "auto";
+    themeInputs.forEach((input) => {
+      input.checked = input.value === savedTheme;
+    });
     dialog.showModal();
   });
 
@@ -18,6 +31,10 @@ export function initSettings() {
       localStorage.setItem("ai-endpoint", endpointIn.value.trim());
       localStorage.setItem("ai-model", modelIn.value.trim());
       localStorage.setItem("ai-api-key", keyIn.value.trim());
+      const selectedTheme =
+        [...themeInputs].find((i) => i.checked)?.value || "auto";
+      localStorage.setItem("fold-theme", selectedTheme);
+      applyTheme(selectedTheme);
     }
   });
 
